@@ -29,6 +29,10 @@ Spring Boot backend application for managing products, users, and orders with JW
 - Swagger/OpenAPI
 - Docker
 
+## Run
+
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
 ## Configuration
 
 ### Environment Profiles
