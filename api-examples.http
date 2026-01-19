@@ -1,0 +1,271 @@
+# ecommerce API - HTTP Examples
+
+# Set base URL
+@baseUrl = http://localhost:8081
+@token = YOUR_JWT_TOKEN_HERE
+
+### 1. AUTHENTICATION
+
+### Register a new USER
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "manoj",
+  "email": "manoj@test.com",
+  "password": "manoj123",
+  "role": "USER"
+}
+
+### Register a PREMIUM_USER
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "premiumuser",
+  "email": "premiumuser@test.com",
+  "password": "premium123",
+  "role": "PREMIUM_USER"
+}
+
+### Register a ADMIN
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "adminuser1",
+  "email": "adminuser1@test.com",
+  "password": "admin123",
+  "role": "ADMIN"
+}
+
+### Login (Save the token from response)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "adminuser1",
+  "password": "admin123"
+}
+
+### 2. PRODUCTS
+
+### Get all products (with pagination)
+GET {{baseUrl}}/api/products?page=0&size=10&sort=name,asc
+Authorization: Bearer {{token}}
+
+### Get product by ID
+GET {{baseUrl}}/api/products/1
+Authorization: Bearer {{token}}
+
+### Search products with filters
+GET {{baseUrl}}/api/products/search?name=laptop&minPrice=100&maxPrice=2000&available=true
+Authorization: Bearer {{token}}
+
+### Create new product (ADMIN only)
+POST {{baseUrl}}/api/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Gaming Mouse",
+  "description": "High precision gaming mouse with RGB lighting",
+  "price": 79.99,
+  "quantity": 50
+}
+
+### Update product (ADMIN only)
+PUT {{baseUrl}}/api/products/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Updated Laptop Pro",
+  "description": "Updated high-performance laptop",
+  "price": 1499.99,
+  "quantity": 45
+}
+
+### Delete product (ADMIN only - soft delete)
+DELETE {{baseUrl}}/api/products/1
+Authorization: Bearer {{token}}
+
+### 3. ORDERS
+
+### Place order with multiple items
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 11,
+      "quantity": 1
+    },
+    {
+      "productId": 2,
+      "quantity": 1
+    }
+  ],
+   "couponCode": ""
+}
+
+### Place large order (to test discount above $500)
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 11,
+      "quantity": 2
+    },
+    {
+      "productId": 2,
+      "quantity": 5
+    }
+  ],
+   "couponCode": ""
+}
+
+### Get order by ID
+GET {{baseUrl}}/api/orders/1
+Authorization: Bearer {{token}}
+
+### Get my orders
+GET {{baseUrl}}/api/orders/my-orders?page=0&size=10
+Authorization: Bearer {{token}}
+
+### Get all orders (ADMIN only)
+GET {{baseUrl}}/api/orders?page=0&size=10
+Authorization: Bearer {{token}}
+
+### 4. TEST SCENARIOS
+
+### Test Case 1: USER with order under $500 (No discount)
+# 1. Login as USER
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "manoj",
+  "password": "manoj123"
+}
+
+# 2. Place order
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 2,
+      "quantity": 5
+    }
+  ]
+}
+# Expected: No discount, total = 5 * $29.99 = $149.95
+
+### Test Case 2: PREMIUM_USER with order under $500 (10% discount)
+# 1. Login as PREMIUM_USER
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "premiumuser",
+  "password": "premium123"
+}
+
+# 2. Place order
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 3,
+      "quantity": 5
+    }
+  ],
+   "couponCode": ""
+}
+
+# Expected: 10% discount, total = $399.95 - $40 = $359.95
+
+### Test Case 3: USER with order above $500 (5% discount)
+# 1. Login as USER
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "manoj",
+  "password": "manoj123"
+}
+
+# 2. Place order
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 4,
+      "quantity": 1
+    }
+  ],
+   "couponCode": ""
+}
+
+# Expected: 5% discount, total = $599.99 - $30 = $569.99
+
+### Test Case 4: PREMIUM_USER with order above $500 (15% discount - 10% + 5%)
+# 1. Login as PREMIUM_USER
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "premiumuser",
+  "password": "premium123"
+}
+
+# 2. Place order
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 4,
+      "quantity": 1
+    }
+  ],
+   "couponCode": ""
+}
+
+# Expected: 15% discount (10% premium + 5% large order)
+# Total = $599.99
+# Discount = $90.00
+# Final = $509.99
+
+### Test Case 5: Insufficient stock
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 10
+    }
+  ],
+   "couponCode": ""
+}
+
+# Expected: 400 Bad Request - Insufficient stock error

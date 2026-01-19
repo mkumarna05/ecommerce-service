@@ -1,0 +1,925 @@
+{
+  "info": {
+    "_postman_id": "5d55582f-0ab5-4671-b7cb-ee3f4fafa5db",
+    "name": "ecomm collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51159653",
+    "_collection_link": "https://go.postman.co/collection/51159653-5d55582f-0ab5-4671-b7cb-ee3f4fafa5db?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc2ODUwOTM5MSwiZXhwIjoxNzY4NTk1NzkxfQ.0_cSOAooURVJtQiDdpZR2aP0J7WYSisgVscpZ5wq8ovcnWn_OnkDSwMc5vanvucW",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product By Id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJwcmVtaXVtdXNlciIsImlhdCI6MTc2ODUwOTI1MSwiZXhwIjoxNzY4NTk1NjUxfQ.LKCRI61W_v9H0w5GDHccEdrw3oO5jk137PNCfi8w9pNuT2UMyjophjov-Vi0BVTS",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYW5vaiIsImlhdCI6MTc2ODc0NDQ4OSwiZXhwIjoxNzY4NzQ4MDg5fQ.U0Gol5793uWMPPh5pXC5JPre4vdr5ex0m6HQyoZ61mY",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/search?name=laptop&minPrice=100&maxPrice=2000&available=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "laptop"
+                },
+                {
+                  "key": "minPrice",
+                  "value": "100"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "2000"
+                },
+                {
+                  "key": "available",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbnVzZXIxIiwiaWF0IjoxNzY4NTYxMTMyLCJleHAiOjE3Njg2NDc1MzJ9.HDtwu_4VHaicYfhFUthiEygbBV8Rd6g6zEgK7AZztOJL-bytpWrKnjC_CnLvNi2J",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Laptop\",\r\n  \"description\": \"12Gb 1TB\",\r\n  \"price\": 2000.00,\r\n  \"quantity\": 50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJpYXQiOjE3Njg1MDk2NDcsImV4cCI6MTc2ODU5NjA0N30.35_jBTdvag2LI-Br6O1S15KC_IIy4Blmi5G23Ks1__F_Xheev56CMBg2qPf3CGa_",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"HD Monitor\",\r\n  \"description\": \"HD Monitor updated\",\r\n  \"price\": 150.00,\r\n  \"quantity\": 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Post-response script for DELETE request visualization",
+                  "var template = `",
+                  "<style>",
+                  "    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }",
+                  "    .container { max-width: 800px; margin: 0 auto; }",
+                  "    .status-card { ",
+                  "        background: white; ",
+                  "        border-radius: 8px; ",
+                  "        padding: 20px; ",
+                  "        margin-bottom: 20px; ",
+                  "        box-shadow: 0 2px 4px rgba(0,0,0,0.1);",
+                  "    }",
+                  "    .status-success { border-left: 4px solid #4CAF50; }",
+                  "    .status-error { border-left: 4px solid #f44336; }",
+                  "    .status-info { border-left: 4px solid #2196F3; }",
+                  "    .status-title { font-size: 24px; margin-bottom: 10px; }",
+                  "    .status-code { ",
+                  "        display: inline-block; ",
+                  "        padding: 4px 12px; ",
+                  "        border-radius: 4px; ",
+                  "        font-weight: bold;",
+                  "        margin-bottom: 15px;",
+                  "    }",
+                  "    .code-success { background: #e8f5e9; color: #2e7d32; }",
+                  "    .code-error { background: #ffebee; color: #c62828; }",
+                  "    .message { color: #666; font-size: 16px; margin: 10px 0; }",
+                  "    .data-section { margin-top: 20px; }",
+                  "    .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; }",
+                  "    .data-table th, .data-table td { ",
+                  "        padding: 12px; ",
+                  "        text-align: left; ",
+                  "        border-bottom: 1px solid #ddd; ",
+                  "    }",
+                  "    .data-table th { background: #f8f9fa; font-weight: 600; }",
+                  "    .data-table tr:hover { background: #f5f5f5; }",
+                  "    .chart-container { background: white; border-radius: 8px; padding: 20px; margin-top: 20px; }",
+                  "    .json-display { ",
+                  "        background: #263238; ",
+                  "        color: #aed581; ",
+                  "        padding: 15px; ",
+                  "        border-radius: 4px; ",
+                  "        overflow-x: auto; ",
+                  "        font-family: monospace;",
+                  "        white-space: pre-wrap;",
+                  "    }",
+                  "</style>",
+                  "",
+                  "<div class=\"container\">",
+                  "    <div class=\"status-card {{statusClass}}\">",
+                  "        <div class=\"status-title\">DELETE Request Result</div>",
+                  "        <span class=\"status-code {{codeClass}}\">{{statusCode}} {{statusText}}</span>",
+                  "        {{#if message}}",
+                  "        <div class=\"message\">{{message}}</div>",
+                  "        {{/if}}",
+                  "    </div>",
+                  "    ",
+                  "    {{#if hasArrayData}}",
+                  "    <div class=\"chart-container\">",
+                  "        <h3>Response Data Chart</h3>",
+                  "        <canvas id=\"responseChart\" height=\"200\"></canvas>",
+                  "    </div>",
+                  "    {{/if}}",
+                  "    ",
+                  "    {{#if hasTableData}}",
+                  "    <div class=\"data-section\">",
+                  "        <h3>Response Details</h3>",
+                  "        <table class=\"data-table\">",
+                  "            <thead>",
+                  "                <tr>",
+                  "                    <th>Property</th>",
+                  "                    <th>Value</th>",
+                  "                </tr>",
+                  "            </thead>",
+                  "            <tbody>",
+                  "                {{#each tableData}}",
+                  "                <tr>",
+                  "                    <td>{{key}}</td>",
+                  "                    <td>{{value}}</td>",
+                  "                </tr>",
+                  "                {{/each}}",
+                  "            </tbody>",
+                  "        </table>",
+                  "    </div>",
+                  "    {{/if}}",
+                  "    ",
+                  "    {{#if showRawJson}}",
+                  "    <div class=\"data-section\">",
+                  "        <h3>Raw Response</h3>",
+                  "        <div class=\"json-display\">{{rawJson}}</div>",
+                  "    </div>",
+                  "    {{/if}}",
+                  "</div>",
+                  "",
+                  "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js\"></script>",
+                  "<script>",
+                  "    pm.getData(function (err, value) {",
+                  "        if (value.hasArrayData && value.chartData) {",
+                  "            var ctx = document.getElementById('responseChart');",
+                  "            new Chart(ctx, {",
+                  "                type: 'bar',",
+                  "                data: {",
+                  "                    labels: value.chartData.labels,",
+                  "                    datasets: [{",
+                  "                        label: value.chartData.datasetLabel,",
+                  "                        data: value.chartData.values,",
+                  "                        backgroundColor: [",
+                  "                            'rgba(54, 162, 235, 0.7)',",
+                  "                            'rgba(255, 99, 132, 0.7)',",
+                  "                            'rgba(255, 206, 86, 0.7)',",
+                  "                            'rgba(75, 192, 192, 0.7)',",
+                  "                            'rgba(153, 102, 255, 0.7)',",
+                  "                            'rgba(255, 159, 64, 0.7)'",
+                  "                        ],",
+                  "                        borderColor: [",
+                  "                            'rgba(54, 162, 235, 1)',",
+                  "                            'rgba(255, 99, 132, 1)',",
+                  "                            'rgba(255, 206, 86, 1)',",
+                  "                            'rgba(75, 192, 192, 1)',",
+                  "                            'rgba(153, 102, 255, 1)',",
+                  "                            'rgba(255, 159, 64, 1)'",
+                  "                        ],",
+                  "                        borderWidth: 1",
+                  "                    }]",
+                  "                },",
+                  "                options: {",
+                  "                    responsive: true,",
+                  "                    legend: { display: true },",
+                  "                    title: {",
+                  "                        display: true,",
+                  "                        text: 'DELETE Response Data'",
+                  "                    },",
+                  "                    scales: {",
+                  "                        yAxes: [{",
+                  "                            ticks: { beginAtZero: true }",
+                  "                        }]",
+                  "                    }",
+                  "                }",
+                  "            });",
+                  "        }",
+                  "    });",
+                  "</script>",
+                  "`;",
+                  "",
+                  "function constructVisualizerPayload() {",
+                  "    var statusCode = pm.response.code;",
+                  "    var statusText = pm.response.status;",
+                  "    var isSuccess = statusCode >= 200 && statusCode < 300;",
+                  "    ",
+                  "    var payload = {",
+                  "        statusCode: statusCode,",
+                  "        statusText: statusText,",
+                  "        statusClass: isSuccess ? 'status-success' : (statusCode >= 400 ? 'status-error' : 'status-info'),",
+                  "        codeClass: isSuccess ? 'code-success' : 'code-error',",
+                  "        message: '',",
+                  "        hasArrayData: false,",
+                  "        hasTableData: false,",
+                  "        showRawJson: false,",
+                  "        tableData: [],",
+                  "        chartData: null,",
+                  "        rawJson: ''",
+                  "    };",
+                  "    ",
+                  "    // Try to parse JSON response",
+                  "    var responseData = null;",
+                  "    try {",
+                  "        responseData = pm.response.json();",
+                  "    } catch (e) {",
+                  "        // Response is not JSON",
+                  "        var textResponse = pm.response.text();",
+                  "        if (textResponse && textResponse.trim()) {",
+                  "            payload.message = textResponse;",
+                  "        } else {",
+                  "            payload.message = isSuccess ? 'Resource deleted successfully!' : 'Request failed';",
+                  "        }",
+                  "        return payload;",
+                  "    }",
+                  "    ",
+                  "    // Handle different response structures",
+                  "    if (responseData === null || responseData === undefined) {",
+                  "        payload.message = isSuccess ? 'Resource deleted successfully!' : 'Request failed';",
+                  "        return payload;",
+                  "    }",
+                  "    ",
+                  "    // Check for message field",
+                  "    if (responseData.message) {",
+                  "        payload.message = responseData.message;",
+                  "    } else if (responseData.msg) {",
+                  "        payload.message = responseData.msg;",
+                  "    } else if (responseData.status) {",
+                  "        payload.message = responseData.status;",
+                  "    } else if (typeof responseData === 'string') {",
+                  "        payload.message = responseData;",
+                  "        return payload;",
+                  "    }",
+                  "    ",
+                  "    // Check if response contains array data for charting",
+                  "    var arrayKey = null;",
+                  "    var arrayData = null;",
+                  "    ",
+                  "    if (Array.isArray(responseData)) {",
+                  "        arrayData = responseData;",
+                  "    } else {",
+                  "        // Look for array properties in the response",
+                  "        for (var key in responseData) {",
+                  "            if (Array.isArray(responseData[key]) && responseData[key].length > 0) {",
+                  "                arrayKey = key;",
+                  "                arrayData = responseData[key];",
+                  "                break;",
+                  "            }",
+                  "        }",
+                  "    }",
+                  "    ",
+                  "    // If we have array data, prepare chart",
+                  "    if (arrayData && arrayData.length > 0) {",
+                  "        payload.hasArrayData = true;",
+                  "        var labels = [];",
+                  "        var values = [];",
+                  "        ",
+                  "        // Try to extract meaningful data for chart",
+                  "        arrayData.slice(0, 10).forEach(function(item, index) {",
+                  "            if (typeof item === 'object' && item !== null) {",
+                  "                // Find a label field",
+                  "                var label = item.name || item.title || item.id || item.label || ('Item ' + (index + 1));",
+                  "                labels.push(String(label));",
+                  "                ",
+                  "                // Find a numeric value",
+                  "                var value = item.value || item.count || item.amount || item.quantity || item.price || 1;",
+                  "                values.push(typeof value === 'number' ? value : 1);",
+                  "            } else if (typeof item === 'number') {",
+                  "                labels.push('Item ' + (index + 1));",
+                  "                values.push(item);",
+                  "            } else {",
+                  "                labels.push(String(item));",
+                  "                values.push(1);",
+                  "            }",
+                  "        });",
+                  "        ",
+                  "        payload.chartData = {",
+                  "            labels: labels,",
+                  "            values: values,",
+                  "            datasetLabel: arrayKey || 'Data'",
+                  "        };",
+                  "    }",
+                  "    ",
+                  "    // Create table data for object properties",
+                  "    if (typeof responseData === 'object' && !Array.isArray(responseData)) {",
+                  "        var tableData = [];",
+                  "        for (var prop in responseData) {",
+                  "            if (responseData.hasOwnProperty(prop) && !Array.isArray(responseData[prop])) {",
+                  "                var val = responseData[prop];",
+                  "                if (typeof val === 'object' && val !== null) {",
+                  "                    val = JSON.stringify(val);",
+                  "                }",
+                  "                tableData.push({",
+                  "                    key: prop,",
+                  "                    value: String(val)",
+                  "                });",
+                  "            }",
+                  "        }",
+                  "        if (tableData.length > 0) {",
+                  "            payload.hasTableData = true;",
+                  "            payload.tableData = tableData;",
+                  "        }",
+                  "    }",
+                  "    ",
+                  "    // Show raw JSON if no other visualization applies",
+                  "    if (!payload.hasArrayData && !payload.hasTableData && !payload.message) {",
+                  "        payload.showRawJson = true;",
+                  "        payload.rawJson = JSON.stringify(responseData, null, 2);",
+                  "    }",
+                  "    ",
+                  "    return payload;",
+                  "}",
+                  "",
+                  "pm.visualizer.set(template, constructVisualizerPayload());"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIxIiwiaWF0IjoxNzY4NzQ0NzQzLCJleHAiOjE3Njg3NDgzNDN9.Afz1KxMvCpVthlS_WOH93b_UsbAZXYvSKS6ltf95a_s",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"adminuser1\",\r\n  \"password\": \"admin123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Premium",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"premiumuser\",\r\n  \"password\": \"premium123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"admin@test.com\",\r\n  \"password\": \"admin123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/auth/login",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SignUp Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"adminuser1\",\r\n  \"email\": \"adminuser1@test.com\",\r\n  \"password\": \"admin123\",\r\n  \"role\": \"ADMIN\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SignUp Premium",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"premiumuser\",\r\n  \"email\": \"premiumuser@test.com\",\r\n  \"password\": \"premium123\",\r\n  \"role\": \"PREMIUM_USER\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SignUp User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"manoj\",\r\n  \"email\": \"manoj@test.com\",\r\n  \"password\": \"manoj123\",\r\n  \"role\": \"USER\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc2ODU2MjgxMywiZXhwIjoxNzY4NjQ5MjEzfQ.4gR5tQnhhbHfu_VlfAzZgkyLUjobxuAX6UMSPHNOx0n4c7JDLJ2-Ih_sWCLZF0Uq",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"items\": [\r\n    {\r\n      \"productId\": 11,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"productId\": 2,\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n   \"couponCode\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Order Large Qty",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc2ODU2NzgzOSwiZXhwIjoxNzY4NjU0MjM5fQ.W6OQxUQ7JAFcUgGC7yfiPHjJy3meJwnUEuo1lyDu7GMAEg67hGCUdcU7hxytS713",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"items\": [\r\n    {\r\n      \"productId\": 11,\r\n      \"quantity\": 11\r\n    },\r\n    {\r\n      \"productId\": 2,\r\n      \"quantity\": 11\r\n    }\r\n  ],\r\n   \"couponCode\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order By ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc2ODU2MjgxMywiZXhwIjoxNzY4NjQ5MjEzfQ.4gR5tQnhhbHfu_VlfAzZgkyLUjobxuAX6UMSPHNOx0n4c7JDLJ2-Ih_sWCLZF0Uq",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"items\": [\r\n    {\r\n      \"productId\": 11,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"productId\": 2,\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n   \"couponCode\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Order",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc2ODU2NTk4NSwiZXhwIjoxNzY4NjUyMzg1fQ.n7RgA6QHSKp76yd5xL8fXkhkvLdGYYKZAYKCctnNCaKdvKBaMjD7FtvpgftqFb4C",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"items\": [\r\n    {\r\n      \"productId\": 11,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"productId\": 2,\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n   \"couponCode\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/my-orders?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "my-orders"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Order (ADMIN)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIxIiwiaWF0IjoxNzY4NzQ1NTQ3LCJleHAiOjE3Njg3NDkxNDd9.HUIxCyib5-gtwmps-17D243JU2okesv84l1GBcx1cjk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/all-orders?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "all-orders"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    }
+  ]
+}

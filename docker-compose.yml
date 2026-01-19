@@ -1,0 +1,68 @@
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecomm-postgres
+    environment:
+      POSTGRES_DB: ecommercedb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - ecomm-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecomm-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - ecomm-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      
+  # Spring Boot Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecomm-app
+    image: ecomm-app
+    deploy:
+      replicas: 3
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/ecommercedb
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      CACHE_ENABLED: "true"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8081:8081"
+    networks:
+      - ecomm-network
+    restart: on-failure
+
+volumes:
+  postgres-data:
+
+networks:
+  ecomm-network:
+    driver: bridge
