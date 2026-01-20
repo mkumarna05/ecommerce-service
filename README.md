@@ -1,5 +1,4 @@
-# ecommerce
-
+# ecommerce service
 
 Spring Boot backend application for managing products, users, and orders with JWT authentication and role-based access control and discount strategy.
 
