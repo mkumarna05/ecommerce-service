@@ -37,10 +37,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ecommerce-service-app
-    image: ecommerce-service-app
-    deploy:
-      replicas: 3
+    container_name: ecommerce-app
     depends_on:
       postgres:
         condition: service_healthy

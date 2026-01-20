@@ -1,11 +1,14 @@
 package com.ecommerce.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +44,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(AbstractHttpConfigurer::disable)
+		http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/swagger-ui.html",
 								"/v3/api-docs/**", "/api-docs/**", "/actuator/**")
@@ -77,22 +80,25 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration config = new CorsConfiguration();
+	public CorsConfigurationSource corsConfigurationSource(
+	        @Value("${app.cors.allowed-origins}") List<String> allowedOrigins) {
 
-		// ⚠️ Allow all origins
-		config.addAllowedOriginPattern("*");
+	    CorsConfiguration config = new CorsConfiguration();
 
-		// Allow all headers & methods
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
+	    if (allowedOrigins.size() == 1 && allowedOrigins.get(0).equals("*")) {
+	        // dev mode: allow all origins with credentials using pattern
+	        config.setAllowedOriginPatterns(List.of("*"));
+	        config.setAllowCredentials(false);
+	    } else {
+	        config.setAllowedOrigins(allowedOrigins);
+	        config.setAllowCredentials(true);
+	    }
 
-		// ❗ Must be FALSE when using "*"
-		config.setAllowCredentials(false);
+	    config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+	    config.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", config);
-
-		return source;
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", config);
+	    return source;
 	}
 }

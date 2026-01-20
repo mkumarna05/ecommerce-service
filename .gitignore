@@ -25,6 +25,7 @@ replay_pid*
 
 # Maven build output
 target/
+target/classes/
 .settings/
 .classpath
 .factorypath
