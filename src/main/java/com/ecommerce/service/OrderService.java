@@ -32,10 +32,10 @@ import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.strategy.DiscountCalculator;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderService {
 
 	private static final Logger log = LoggerFactory.getLogger(OrderService.class);
@@ -136,7 +136,6 @@ public class OrderService {
 	}
 
 	@Transactional(readOnly = true)
-	@Cacheable(value = "orders", key = "#userId + ':' + #pageable.pageNumber + ':' + #pageable.pageSize")
 	public Page<OrderResponse> getMyOrders(Pageable pageable) {
 		log.debug("Fetching orders for current user");
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -21,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ecommerce.dto.ProductDTO;
 import com.ecommerce.entity.Product;
-import com.ecommerce.exception.ResourceNotFoundException;
+import com.ecommerce.exception.InsufficientStockException;
 import com.ecommerce.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,10 +38,10 @@ class ProductServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		testProduct = Product.builder().id(1L).name("Test Product").description("Test Description")
-				.price(new BigDecimal("99.99")).quantity(10).deleted(false).build();
+		testProduct = Product.builder().id(1L).name("New Product").description("New Description")
+				.price(new BigDecimal("109.99")).quantity(10).deleted(false).build();
 
-		testProductDTO = new ProductDTO(null, "Test Product", "Test Description", new BigDecimal("99.99"), 10, false);
+		testProductDTO = new ProductDTO(null, "New Product", "New Description", new BigDecimal("99.99"), 10, false);
 	}
 
 	@Test
@@ -54,8 +54,8 @@ class ProductServiceTest {
         
         // Assert
         assertNotNull(result);
-        assertEquals("Test Product", result.name());
-        assertEquals(new BigDecimal("99.99"), result.price());
+        assertEquals("New Product", result.name());
+        assertEquals(new BigDecimal("109.99"), result.price());
         verify(productRepository, times(1)).findById(1L);
     }
 
@@ -65,7 +65,7 @@ class ProductServiceTest {
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
         
         // Act & Assert
-        assertThrows(ResourceNotFoundException.class, () -> productService.getProductById(1L));
+        assertThrows(InsufficientStockException.class, () -> productService.getProductById(1L));
         verify(productRepository, times(1)).findById(1L);
     }
 
@@ -79,7 +79,7 @@ class ProductServiceTest {
         
         // Assert
         assertNotNull(result);
-        assertEquals("Test Product", result.name());
+        assertEquals("New Product", result.name());
         verify(productRepository, times(1)).save(any(Product.class));
     }
 

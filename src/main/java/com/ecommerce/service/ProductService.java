@@ -14,13 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.dto.ProductDTO;
 import com.ecommerce.entity.Product;
+import com.ecommerce.exception.InsufficientStockException;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.ProductRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductService {
 
 	private static final Logger log = LoggerFactory.getLogger(ProductService.class);
@@ -31,7 +32,7 @@ public class ProductService {
 	@Cacheable(value = "products", key = "'all'")
 	public Page<ProductDTO> getAllProducts(Pageable pageable) {
 		log.debug("Fetching all products with pagination");
-		return productRepository.findByDeletedFalse(pageable).map(this::mapToDTO);
+		return productRepository.findByDeletedFalse(pageable).map(this::buildProductResponse);
 	}
 
 	@Transactional(readOnly = true)
@@ -39,13 +40,13 @@ public class ProductService {
 	public ProductDTO getProductById(Long id) {
 		log.debug("Fetching product with id: {}", id);
 		Product product = productRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+				.orElseThrow(() -> new InsufficientStockException("Product not found with id: " + id));
 
 		if (product.getDeleted()) {
-			throw new ResourceNotFoundException("Product not found with id: " + id);
+			throw new InsufficientStockException("Product not found with id: " + id);
 		}
 
-		return mapToDTO(product);
+		return buildProductResponse(product);
 	}
 
 	@Transactional
@@ -57,7 +58,7 @@ public class ProductService {
 
 		Product savedProduct = productRepository.save(product);
 		log.info("Product created successfully with id: {}", savedProduct.getId());
-		return mapToDTO(savedProduct);
+		return buildProductResponse(savedProduct);
 	}
 
 	@Transactional
@@ -79,7 +80,7 @@ public class ProductService {
 
 		Product updatedProduct = productRepository.save(product);
 		log.info("Product updated successfully with id: {}", id);
-		return mapToDTO(updatedProduct);
+		return buildProductResponse(updatedProduct);
 	}
 
 	@Transactional
@@ -100,7 +101,8 @@ public class ProductService {
 			Pageable pageable) {
 		log.debug("Searching products with filters - name: {}, minPrice: {}, maxPrice: {}, available: {}", name,
 				minPrice, maxPrice, available);
-		return productRepository.searchProducts(name, minPrice, maxPrice, available, pageable).map(this::mapToDTO);
+		return productRepository.searchProducts(name, minPrice, maxPrice, available, pageable)
+				.map(this::buildProductResponse);
 	}
 
 	@Transactional
@@ -117,7 +119,7 @@ public class ProductService {
 		productRepository.save(product);
 	}
 
-	private ProductDTO mapToDTO(Product product) {
+	private ProductDTO buildProductResponse(Product product) {
 		return new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPrice(),
 				product.getQuantity(), product.getDeleted());
 	}

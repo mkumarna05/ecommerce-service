@@ -37,8 +37,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ecomm-app
-    image: ecomm-app
+    container_name: ecommerce-service-app
+    image: ecommerce-service-app
     deploy:
       replicas: 3
     depends_on:

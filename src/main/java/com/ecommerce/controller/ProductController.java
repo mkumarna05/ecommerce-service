@@ -26,12 +26,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/products")
 @SecurityRequirement(name = "bearerAuth")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "Products", description = "Product management endpoints")
 public class ProductController {
 
