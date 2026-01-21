@@ -89,16 +89,7 @@ class AuthControllerTest {
 		// Simulate Spring Security throwing exception
 		when(authService.login(any())).thenThrow(new BadCredentialsException("Invalid credentials"));
 
-		ResponseEntity<LoginResponse> response = authController.login(request);
-
-		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-
-		// Assert: the LoginResponse body is empty/null
-		LoginResponse body = response.getBody();
-		assertEquals(null, body.token());
-		assertEquals(null, body.username());
-		assertEquals(null, body.role());
-		assertEquals(null, body.email());
+		assertThrows(BadCredentialsException.class, () -> authController.login(request));
 	}
 
 }

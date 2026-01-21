@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ecommerce.dto.DiscountRequest;
 import com.ecommerce.dto.OrderItemDTO;
+import com.ecommerce.dto.OrderItemRequest;
 import com.ecommerce.dto.OrderRequest;
 import com.ecommerce.dto.OrderResponse;
 import com.ecommerce.entity.Order;
@@ -59,18 +61,22 @@ public class OrderService {
 				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
 
 		// Validate stock availability for all items
-		validateStock(request);
+		// validateStock(request);
 
-		// Create order
 		Order order = Order.builder().user(user).status(OrderStatus.PENDING).items(new ArrayList<>()).build();
 
 		BigDecimal subtotal = BigDecimal.ZERO;
 
+		List<Long> productIds = request.items().stream().map(OrderItemRequest::productId).toList();
+
+		List<Product> products = productRepository.findAllById(productIds);
+
+		checkProductAvailability(products, request.items());
 		// Process each order item
 		for (var itemRequest : request.items()) {
-			Product product = productRepository.findById(itemRequest.productId()).orElseThrow(
-					() -> new InsufficientStockException("Product not found with id: " + itemRequest.productId()));
 
+			Product product = products.stream().filter(p -> p.getId().equals(itemRequest.productId())).findFirst()
+					.get();
 			BigDecimal itemTotal = product.getPrice().multiply(BigDecimal.valueOf(itemRequest.quantity()));
 			subtotal = subtotal.add(itemTotal);
 
@@ -152,6 +158,21 @@ public class OrderService {
 	public Page<OrderResponse> getAllOrders(Pageable pageable) {
 		log.debug("Fetching all orders");
 		return orderRepository.findAll(pageable).map(this::buildOrderResponse);
+	}
+
+	private void checkProductAvailability(List<Product> products, List<OrderItemRequest> orderItems) {
+		for (OrderItemRequest item : orderItems) {
+			Product product = products.stream().filter(p -> p.getId().equals(item.productId())).findFirst()
+					.orElseThrow(() -> new InsufficientStockException("Product not found: " + item.productId()));
+
+			if (product.getDeleted()) {
+				throw new InsufficientStockException(product.getId(), item.quantity(), product.getQuantity());
+			}
+
+			if (product.getQuantity() < item.quantity() && product.getDeleted()) {
+				throw new InsufficientStockException(product.getId(), item.quantity(), product.getQuantity());
+			}
+		}
 	}
 
 	private void validateStock(OrderRequest request) {

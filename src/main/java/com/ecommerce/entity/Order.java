@@ -60,11 +60,11 @@ public class Order implements Serializable {
 	private OrderStatus status;
 
 	@CreatedDate
-	@Column(name = "created_at", nullable = false, updatable = false)
+	@Column(name = "created_at", nullable = false, insertable = true, updatable = false)
 	private LocalDateTime createdAt;
 
 	@LastModifiedDate
-	@Column(name = "updated_at")
+	@Column(name = "updated_at", nullable = false, insertable = false, updatable = true)
 	private LocalDateTime updatedAt;
 
 	public void addItem(OrderItem item) {

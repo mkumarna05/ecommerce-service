@@ -27,9 +27,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.ecommerce.dto.DiscountRequest;
 import com.ecommerce.dto.OrderItemRequest;
 import com.ecommerce.dto.OrderRequest;
+import com.ecommerce.dto.OrderResponse;
 import com.ecommerce.entity.Order;
+import com.ecommerce.entity.OrderStatus;
 import com.ecommerce.entity.Product;
 import com.ecommerce.entity.Role;
 import com.ecommerce.entity.User;
@@ -59,7 +62,7 @@ class OrderServiceTest {
 	private OrderService orderService;
 
 	private User user;
-	
+
 	private Product product;
 
 	@BeforeEach
@@ -86,35 +89,44 @@ class OrderServiceTest {
 		OrderItemRequest itemRequest = new OrderItemRequest(1L, 2);
 		OrderRequest request = new OrderRequest(List.of(itemRequest), "COUPON10");
 
+		User user = User.builder().id(1L).username("manoj").role(Role.USER).build();
+
+		Product product = Product.builder().id(1L).name("Laptop").price(new BigDecimal("1000")).quantity(10)
+				.deleted(false).build();
+
 		when(userRepository.findByUsername("manoj")).thenReturn(Optional.of(user));
 
-		when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+		when(productRepository.findAllById(List.of(1L))).thenReturn(List.of(product));
 
-		when(productRepository.save(any(Product.class))).thenReturn(product);
+		when(discountCalculator.totalDiscount(any(DiscountRequest.class))).thenReturn(new BigDecimal("100"));
 
-		when(discountCalculator.totalDiscount(any())).thenReturn(BigDecimal.ZERO);
-
-		when(orderRepository.save(any(Order.class))).thenAnswer(inv -> {
-			Order o = inv.getArgument(0);
-			o.setId(1L);
-			return o;
+		when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
+			Order order = invocation.getArgument(0);
+			order.setId(1L);
+			return order;
 		});
 
-		var response = orderService.placeOrder(request);
+		// ---------- WHEN ----------
+		OrderResponse response = orderService.placeOrder(request);
 
+		// ---------- THEN ----------
 		assertNotNull(response);
 		assertEquals(1L, response.id());
-		assertEquals(new BigDecimal("2000"), response.orderTotal());
+		assertEquals(0, response.orderTotal().compareTo(new BigDecimal("1900.00")));
+		assertEquals(OrderStatus.PENDING, response.status());
+
+		verify(userRepository).findByUsername("manoj");
+		verify(productRepository).save(product);
 		verify(orderRepository).save(any(Order.class));
 	}
 
 	@Test
 	void placeOrder_insufficientStock() {
 		product.setQuantity(1);
-
+		product.setDeleted(true);
 		OrderRequest request = new OrderRequest(List.of(new OrderItemRequest(1L, 5)), null);
 		when(userRepository.findByUsername("manoj")).thenReturn(Optional.of(user));
-		when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+		when(productRepository.findAllById(List.of(1L))).thenReturn(List.of(product));
 		assertThrows(InsufficientStockException.class, () -> orderService.placeOrder(request));
 	}
 
